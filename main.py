@@ -1,9 +1,20 @@
+from flask import Flask, request, jsonify
+import requests
+
+app = Flask(__name__)  # ← This must come before @app.route
+
+API_KEY = 'b8aa0045'
+
+@app.route('/')
+def home():
+    return 'IMDb ID API is running!'
+
 @app.route('/geturl')
 def geturl():
     title = request.args.get('title')
     season = request.args.get('season')
     episode = request.args.get('episode')
-
+    
     if not title or not season or not episode:
         return jsonify({'error': 'Missing parameters'}), 400
 
@@ -16,3 +27,6 @@ def geturl():
         return jsonify({'url': url})
     else:
         return jsonify({'error': 'Title not found'}), 404
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=10000)
